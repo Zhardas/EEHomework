@@ -26,6 +26,7 @@ app.controller('eeController', function ($scope) {
         "email": "heli.kopter@gmail.com",
         "address": "Prantsusmaa"
     });
+
     var idCounter = 2;
     $scope.edit = function (id) {
         for (var i = 0; i < $scope.eeData.length; i++) {
@@ -55,22 +56,22 @@ app.controller('eeController', function ($scope) {
 
     $scope.save = function () {
         if (!isValid()) return;
+        var update = false;
         for (var i = 0; i < $scope.eeData.length; i++) {
             if ($scope.eeData[i].id === $scope.infoEdit.id) {
                 $scope.eeData[i] = $scope.infoEdit;
-                $scope.infoStyle = {'display': 'none'};
-                return;
+                update = true;
+                break;
             }
         }
-        $scope.eeData.push($scope.infoEdit);
+        if (!update) $scope.eeData.push($scope.infoEdit);
         $scope.infoStyle = {'display': 'none'};
+        $scope.refreshHints();
     };
 
     function isValid() {
         for (var prop in $scope.infoEdit) {
             if ($scope.infoEdit.hasOwnProperty(prop)) {
-                console.log(prop);
-                console.log($scope.infoEdit[prop]);
                 if ($scope.infoEdit[prop] === undefined || $scope.infoEdit[prop] === "") {
                     alert("Palun täitke kõik väljad!");
                     return false;
@@ -93,6 +94,38 @@ app.controller('eeController', function ($scope) {
         }
         return true;
     }
+
+    // Sorting and filtering
+    $scope.sortType = 'firstName';
+    $scope.sortReverse = false;
+    $scope.search = '';     // set the default search/filter term
+    $scope.hints = [];
+
+    $scope.sort = function (type) {
+        if ($scope.sortType === type) {
+            $scope.sortReverse = !$scope.sortReverse;
+        } else {
+            $scope.sortType = type;
+            $scope.sortReverse = false;
+        }
+    };
+
+    $scope.refreshHints = function () {
+        $scope.hints = [];
+        for (var i = 0; i < $scope.eeData.length; i++) {
+            $scope.hints.push($scope.eeData[i].firstName);
+            $scope.hints.push($scope.eeData[i].lastName);
+            $scope.hints.push($scope.eeData[i].email);
+            $scope.hints.push($scope.eeData[i].address);
+        }
+    };
+}).directive("autoComplete", function () {
+    return function (scope, element, attrs) {
+        scope.refreshHints();
+        element.autocomplete({
+            source: scope.hints
+        });
+    };
 });
 
 function iterationCopy(src) {
