@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <!-- 1. Load libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+    <!-- 2. Load our 'controllers' -->
+    <script src='main.js'></script>
+</head>
+<body>
+<div class="container" ng-app="myApp" ng-controller="eeController">
+    <h1>EE kodutöö</h1>
+    <input class="form-control" type="search" ng-model="search" title="Isikud: " placeholder="Otsi">
+    <button id="add-button" class="btn btn-success" ng-click="add()">Lisa uus isik!</button>
+    <div class="table-responsive" id="info" ng-style="infoStyle">
+        <table class="needs-validation table table-striped table-condensed">
+            <tr>
+                <th>Eesnimi</th>
+                <th>Perenimi</th>
+                <th>Sünnikuupäev</th>
+                <th>Email</th>
+                <th>Aadress</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr class="form-group">
+                <td><input class="form-control" type="text" ng-model="infoEdit.firstName" title="" required></td>
+                <td><input class="form-control" type="text" ng-model="infoEdit.lastName" title="" required></td>
+                <td><input id="emailEdit" class="form-control" type="date" ng-model="infoEdit.dateOfBirth" title=""
+                           required></td>
+                <td><input class="form-control" type="email" ng-model="infoEdit.email" title="" required></td>
+                <td><input class="form-control" type="text" ng-model="infoEdit.address" title="" required></td>
+                <td>
+                    <button class="btn btn-success" ng-click="save()">Salvesta!</button>
+                </td>
+                <td>
+                    <button class="btn btn-danger" ng-click="infoStyle = {'display': 'none'}">Tühista!</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-condensed">
+            <tr>
+                <th>Eesnimi</th>
+                <th>Perenimi</th>
+                <th>Sünnikuupäev</th>
+                <th>Email</th>
+                <th>Aadress</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="x in eeData">
+                <td>{{ x.firstName }}</td>
+                <td>{{ x.lastName }}</td>
+                <td>{{ x.dateOfBirth | date:'dd/MM/yyyy'}}</td>
+                <td>{{ x.email }}</td>
+                <td>{{ x.address }}</td>
+                <td>
+                    <button class="btn btn-warning btn-sm" ng-click="edit(x.id)">Muuda!
+                    </button>
+                    <button class="btn btn-danger btn-sm" ng-click="remove(x.id)">Kustuta!</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>
