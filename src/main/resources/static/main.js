@@ -1,31 +1,7 @@
 var app = angular.module('myApp', []);
-app.controller('eeController', function ($scope) {
+app.controller('eeController', function ($scope, $http) {
     $scope.infoStyle = {'display': 'none'};
     $scope.eeData = [];
-    $scope.eeData.push({
-        "id": 0,
-        "firstName": "Ain",
-        "lastName": "Kala",
-        "dateOfBirth": new Date(1900, 0, 11),
-        "email": "ain.kala@gmail.com",
-        "address": "Viiralti 13 Tallinn"
-    });
-    $scope.eeData.push({
-        "id": 1,
-        "firstName": "Siiru",
-        "lastName": "Viiru",
-        "dateOfBirth": new Date(1980, 0, 11),
-        "email": "siiru.viiru@gmail.com",
-        "address": "Soo 10 Tallinn"
-    });
-    $scope.eeData.push({
-        "id": 2,
-        "firstName": "Heli",
-        "lastName": "Kopter",
-        "dateOfBirth": new Date(1907, 7, 14),
-        "email": "heli.kopter@gmail.com",
-        "address": "Prantsusmaa"
-    });
 
     var idCounter = 2;
     $scope.edit = function (id) {
@@ -46,27 +22,25 @@ app.controller('eeController', function ($scope) {
     };
 
     $scope.remove = function (id) {
-        for (var i = 0; i < $scope.eeData.length; i++) {
-            if ($scope.eeData[i].id === id) {
-                $scope.eeData.splice(i, 1);
-                return;
-            }
-        }
+        $http.delete("users/" + id).then(function (response) {
+            $scope.refreshUsers();
+        });
     };
 
     $scope.save = function () {
         if (!isValid()) return;
-        var update = false;
-        for (var i = 0; i < $scope.eeData.length; i++) {
-            if ($scope.eeData[i].id === $scope.infoEdit.id) {
-                $scope.eeData[i] = $scope.infoEdit;
-                update = true;
-                break;
-            }
-        }
-        if (!update) $scope.eeData.push($scope.infoEdit);
         $scope.infoStyle = {'display': 'none'};
-        $scope.refreshHints();
+        var userInfo = $scope.infoEdit;
+        $scope.infoEdit = {};
+        var date = userInfo.dateOfBirth;
+        userInfo.dateOfBirth = {
+            year: date.getFullYear(),
+            month: date.getMonth() + 1,
+            day: date.getDate()
+        };
+        $http.post("users/", JSON.stringify(userInfo)).then(function () {
+            $scope.refreshUsers();
+        });
     };
 
     function isValid() {
@@ -118,10 +92,24 @@ app.controller('eeController', function ($scope) {
             $scope.hints.push($scope.eeData[i].email);
             $scope.hints.push($scope.eeData[i].address);
         }
+        console.log($scope.hints);
     };
+
+    $scope.refreshUsers = function () {
+        $http.get("users/")
+            .then(function (response) {
+                for (var i = 0; i < response.data.length; i++) {
+                    var bDate = response.data[i].dateOfBirth;
+                    response.data[i].dateOfBirth = new Date(bDate.year, bDate.month - 1, bDate.day);
+                }
+                $scope.eeData = response.data;
+                $scope.refreshHints();
+            })
+    };
+
+    $scope.refreshUsers();
 }).directive("autoComplete", function () {
     return function (scope, element, attrs) {
-        scope.refreshHints();
         element.autocomplete({
             source: scope.hints
         });
