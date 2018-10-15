@@ -1,23 +1,13 @@
 package magnus.peterson.homework.model;
 
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class User {
-    @NotNull(message = "ID can't be empty!")
-    @Digits(fraction = 0, integer = 8, message = "Must be a number!")
     private int id;
-    @NotEmpty(message = "First name cannot be empty!")
     private String firstName;
-    @NotEmpty(message = "Last name cannot be empty!")
     private String lastName;
-    @NotEmpty(message = "Date of birth cannot be empty!")
     private LocalDate dateOfBirth;
-    @NotEmpty(message = "Email address cannot be empty!")
     private String email;
-    @NotEmpty(message = "Address cannot be empty!")
     private String address;
 
     public User() {

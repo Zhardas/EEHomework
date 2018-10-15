@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
+    // Initialize users array with sample users.
     private ArrayList<User> users = new ArrayList<>(
             Arrays.asList(
                     new User(0, "Ain", "Kala", LocalDate.of(1900, 11, 1), "ain.kala@gmail.com", "Viiralti 13 Tallinn"),
@@ -35,9 +36,9 @@ public class UserServiceImpl implements UserService {
     public void update(User user) {
         User updatableUser = getUserById(user.getId());
         if (updatableUser == null) {
-            updatableUser = new User();
-            updatableUser.setId(++idCounter);
-            users.add(updatableUser);
+            user.setId(++idCounter);
+            users.add(user);
+            return;
         }
         updatableUser.setFirstName(user.getFirstName());
         updatableUser.setLastName(user.getLastName());

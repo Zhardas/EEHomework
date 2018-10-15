@@ -21,7 +21,6 @@ public class UserController {
         this.userService = userService;
     }
 
-
     @RequestMapping(value = "/{userID}", method = RequestMethod.DELETE)
     public @ResponseBody
     String removeUser(@PathVariable String userID, Model model) {

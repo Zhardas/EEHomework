@@ -53,23 +53,23 @@
         <table class="table table-striped table-condensed">
             <tr>
                 <th>
-                    <a href="#" ng-click="sort('firstName')">Eesnimi {{sortType==='firstName'?(sortReverse?'&#8595;':'&#8593;'):''}}</a>
+                    <a href="#" ng-click="sort('firstName')">Eesnimi {{sortType==='firstName'?(sortDescending?'&#8595;':'&#8593;'):''}}</a>
                 </th>
                 <th>
-                    <a href="#" ng-click="sort('lastName')">Perenimi {{sortType==='lastName'?(sortReverse?'&#8595;':'&#8593;'):''}}</a>
+                    <a href="#" ng-click="sort('lastName')">Perenimi {{sortType==='lastName'?(sortDescending?'&#8595;':'&#8593;'):''}}</a>
                 </th>
                 <th>
-                    <a href="#" ng-click="sort('dateOfBirth')">Sünnikuupäev {{sortType==='dateOfBirth'?(sortReverse?'&#8595;':'&#8593;'):''}}</a>
+                    <a href="#" ng-click="sort('dateOfBirth')">Sünnikuupäev {{sortType==='dateOfBirth'?(sortDescending?'&#8595;':'&#8593;'):''}}</a>
                 </th>
                 <th>
-                    <a href="#" ng-click="sort('email')">Email {{sortType==='email'?(sortReverse?'&#8595;':'&#8593;'):''}}</a>
+                    <a href="#" ng-click="sort('email')">Email {{sortType==='email'?(sortDescending?'&#8595;':'&#8593;'):''}}</a>
                 </th>
                 <th>
-                    <a href="#" ng-click="sort('address')">Aadress {{sortType==='address'?(sortReverse?'&#8595;':'&#8593;'):''}}</a>
+                    <a href="#" ng-click="sort('address')">Aadress {{sortType==='address'?(sortDescending?'&#8595;':'&#8593;'):''}}</a>
                 </th>
                 <th></th>
             </tr>
-            <tr ng-repeat="x in eeData | orderBy:sortType:sortReverse | filter:search">
+            <tr ng-repeat="x in eeData | orderBy:sortType:sortDescending | filter:search">
                 <td>{{ x.firstName }}</td>
                 <td>{{ x.lastName }}</td>
                 <td>{{ x.dateOfBirth | date:'dd/MM/yyyy'}}</td>
