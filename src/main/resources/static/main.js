@@ -85,14 +85,13 @@ app.controller('eeController', function ($scope, $http) {
     };
 
     $scope.refreshHints = function () {
-        $scope.hints = [];
+        $scope.hints.length = 0;
         for (var i = 0; i < $scope.eeData.length; i++) {
             $scope.hints.push($scope.eeData[i].firstName);
             $scope.hints.push($scope.eeData[i].lastName);
             $scope.hints.push($scope.eeData[i].email);
             $scope.hints.push($scope.eeData[i].address);
         }
-        console.log($scope.hints);
     };
 
     $scope.refreshUsers = function () {
